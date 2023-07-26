@@ -6,10 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
+    /* html{
+      font-size: ;
+    } */
     * {
       margin: 0;
       padding: 0;
       /* color: black; */
+      box-sizing: border-box;
     }
 
     .photolayout {
@@ -36,7 +40,7 @@
     }
 
     .box {
-      width: 0;
+      width: 30%;
       background-color: rgba(255, 255, 255, 0.3);
       overflow: auto;
       display: flex;
@@ -48,12 +52,14 @@
 
 
     .box .item {
-      width: 100px;
-      height: 100px;
+      width: 23%;
+      /* height: 30%; */
+      aspect-ratio: 1 / 1;
       margin-top: 5px;
       margin-right: 5px;
       border: 1px solid white;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .box .item img {
@@ -542,7 +548,7 @@
     let currentIndex = 0
     let showBox = false
 
-    const currentInfo = {
+    /* const currentInfo = {
       index: 0,
     }
 
@@ -554,7 +560,7 @@
         currentIndex = val
         update()
       }
-    })
+    }) */
 
     const currentImgEle = document.querySelector(".current")
     const currentImgBack = document.querySelector(".current-back")
@@ -562,48 +568,6 @@
     const showBoxBtn = document.querySelector(".showBoxBtn")
     const preBtn = document.querySelector(".pre")
     const nextBtn = document.querySelector(".next")
-
-    // 第一次设置显示区图像
-    currentImgEle.src = data[currentInfo.index].poster
-    currentImgBack.src = data[currentInfo.index].poster
-    // 更新显示区图像
-    function update() {
-      currentImgEle.src = data[currentInfo.index].poster
-      currentImgBack.src = data[currentInfo.index].poster
-    }
-
-    // 前后切换
-    preBtn.addEventListener("click", e => {
-      if (currentInfo.index <= 0) {
-        currentInfo.index = data.length - 1
-      } else {
-        currentInfo.index--
-      }
-    })
-    nextBtn.addEventListener("click", e => {
-      if (currentInfo.index >= data.length - 1) {
-        currentInfo.index = 0
-      } else {
-        currentInfo.index++
-      }
-    })
-
-    // 显示隐藏边栏
-    showBoxBtn.addEventListener("click", (e) => {
-      if (showBox) {
-        boxEle.style.width = "0";
-      } else {
-        boxEle.style.width = "25%";
-      }
-      showBox = !showBox
-    })
-
-    // 点击边栏图片同步显示区
-    boxEle.addEventListener("click", (e) => {
-      if (e.target.index) {
-        currentInfo.index = e.target.index
-      }
-    })
 
     // 创建边栏区域
     let itemList = []
@@ -619,6 +583,97 @@
     itemList.forEach(item => {
       boxEle.appendChild(item)
     })
+
+    // 显示隐藏边栏
+    showBoxBtn.addEventListener("click", (e) => {
+      if (!showBox) {
+        boxEle.style.width = "0";
+      } else {
+        boxEle.style.width = "30%";
+      }
+      showBox = !showBox
+    })
+
+
+    // 设置显示区图像
+    function SetShowImages() {
+      const imgItem = data[currentIndex]
+      currentImgEle.src = imgItem.poster
+      currentImgBack.src = imgItem.poster
+    }
+
+    // 第一次设置显示区图像
+    SetShowImages()
+
+    // 点击边栏图片同步显示区
+    boxEle.addEventListener("click", (e) => {
+      if (e.target.index) {
+        currentIndex = e.target.index
+        SetShowImages()
+      }
+    })
+    // 前后切换
+    preBtn.addEventListener("click", e => {
+      if (currentIndex <= 0) {
+        currentIndex = data.length - 1
+      } else {
+        currentIndex--
+      }
+      SetShowImages()
+    })
+    nextBtn.addEventListener("click", e => {
+      if (currentIndex >= data.length - 1) {
+        currentIndex = 0
+      } else {
+        currentIndex++
+      }
+      SetShowImages()
+    })
+
+
+    /* // 第一次设置显示区图像
+    currentImgEle.src = data[currentInfo.index].poster
+    currentImgBack.src = data[currentInfo.index].poster
+    // 更新显示区图像
+    function update() {
+      currentImgEle.src = data[currentInfo.index].poster
+      currentImgBack.src = data[currentInfo.index].poster
+    } */
+
+    /* // 前后切换
+    preBtn.addEventListener("click", e => {
+      if (currentInfo.index <= 0) {
+        currentInfo.index = data.length - 1
+      } else {
+        currentInfo.index--
+      }
+    })
+    nextBtn.addEventListener("click", e => {
+      if (currentInfo.index >= data.length - 1) {
+        currentInfo.index = 0
+      } else {
+        currentInfo.index++
+      }
+    }) */
+
+    // 显示隐藏边栏
+    /* showBoxBtn.addEventListener("click", (e) => {
+      if (showBox) {
+        boxEle.style.width = "0";
+      } else {
+        boxEle.style.width = "25%";
+      }
+      showBox = !showBox
+    }) */
+
+    /* // 点击边栏图片同步显示区
+    boxEle.addEventListener("click", (e) => {
+      if (e.target.index) {
+        currentInfo.index = e.target.index
+      }
+    }) */
+
+
 
 
   </script>
