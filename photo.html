@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .item {
+      margin: 5px;
+      width: 300px;
+      height: 400px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .item .photo,.video,.design {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    
+
+
+    .item:hover img,video {
+      transform: scale(1.1);
+    }
+    .item .design {
+      object-fit: contain;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    
+
+
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 999;
+    }
+
+    .content {
+      margin: 10% auto;
+      width: 80%;
+      height: 80%;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .content img {
+      width: 100%;
+      height: 100%;
+      /* height: auto; */
+      object-fit: contain;
+    }
+
+    .content video {
+      width: 100%;
+      height: 100%;
+      /* height: auto; */
+      object-fit: contain;
+    }
+
+    .show {
+      display: block;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .active {
+      background-color: #efefef;
+      font-weight: bold;
+      color: black;
+    }
+
+    button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #efefef;
+      border: none;
+      cursor: pointer;
+      height: 30px;
+      width: 60px;
+    }
+
+    .tabs {
+      display: flex;
+      /* justify-content: center; */
+
+      border-bottom: 1px solid #efefef;
+    }
+
+    h2 {
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-bottom: 0;
+      font-weight: normal;
+      color: #333;
+    }
+
+    h2:hover {
+      background-color: #efefef;
+    }
+    p {
+      margin-bottom: 20px;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="tabs">
+    <h2 class="active">视频类</h2>
+    <h2>图片类</h2>
+    <h2>设计类</h2>
+  </div>
+
+  <div class="tab show">
+    <p>展示内容仅为一些久远的没版权的视频，更多视频可以到以下抖音号查看：
+      <a href="https://v.douyin.com/iYkx5fC7/" target="_blank"><b style="font-size: 20px;">德玛纳</b></a>、
+      <a href="https://v.douyin.com/iYkmDoFD/" target="_blank"><b style="font-size: 20px;">禾平社影</b></a>、
+      <a href="https://v.douyin.com/iYkxCHMv/" target="_blank"><b style="font-size: 20px;">蜀福纪食品</b></a>、
+      <a href="https://v.douyin.com/iYkxsKEv/" target="_blank"><b style="font-size: 20px;">亿树园</b></a>、
+      <a href="https://v.douyin.com/iYkCNk8J/" target="_blank"><b style="font-size: 20px;">做菜</b></a>、
+      更久远的记不到了
+    </p>
+
+    <div class="container container2">
+
+    </div>
+  </div>
+  <!-- 图片 -->
+  <div class="tab hide">
+    <p>展示内容仅为一些久远的没版权的图，更多图片可以到 <a href="https://go2.cn" target="_blank"><b style="font-size: 20px;">购途网</b></a> 查看，以及抖音号：<a href="https://v.douyin.com/iYkmDoFD/" target="_blank"><b style="font-size: 20px;">禾平社影</b></a> </p>
+    <div class="container container1">
+    </div>
+  </div>
+
+  <!-- 设计 -->
+
+  <div class="tab hide">
+    <p>展示内容仅为一些久远的没版权的图，更多图片可以到 <a href="https://go2.cn" target="_blank"><b style="font-size: 20px;">购途网</b></a> 查看
+    </p>
+
+    <div class="container container3">
+
+    </div>
+  </div>
+
+
+  <div id="modal">
+    <div class="content">
+
+    </div>
+    <button>
+      关闭
+    </button>
+  </div>
+
+  <script>
+    const photo1 = [
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books0 (1).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books0 (2).JPG",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books0 (3).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books0 (4).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (1).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (1).png",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (2).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (3).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (3).png",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (4).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (5).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (6).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (7).JPG",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (8).JPG",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books1 (9).jpg",
+
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books2 (1).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books2 (2).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books2 (3).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books2 (4).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books2 (5).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books001.jpg",
+
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books5 (1).jpeg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books5 (1).jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books5 (2).jpeg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books5 (2).JPG",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books5 (3).jpg",
+    ]
+    /*
+        const photo2 = [
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books2 (1).jpg",
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books2 (2).jpg",
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books2 (3).jpg",
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books2 (4).jpg",
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books2 (5).jpg",
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books001.jpg",
+        ]
+
+        const photo3 = [
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books5 (1).jpeg",
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books5 (1).jpg",
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books5 (2).jpeg",
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books5 (2).JPG",
+          "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/books5 (3).jpg",
+        ]
+    */
+
+    const video = [
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/video/01-R%20QYJ-wt.mp4",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/video/01-wzq-wt.mp4",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/video/02.mp4",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/video/03-R%20QYJ-wt.mp4",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/video/22-wzqqyj-wt.mp4",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/video/L108-TMALL.mp4",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/video/S406-TMALL.mp4",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/video/W501-taobao.mp4",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/video/no-title%20%283%29.mp4",
+    ]
+
+
+    const design = [
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/design/shoushi.jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/design/%E5%8F%A4%E9%A3%8E%E9%A6%96%E9%A1%B5demo.jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/design/%E6%89%8B%E6%9C%BA%E7%AB%AF%E5%BA%97%E9%93%BA.jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/design/%E8%85%8A%E8%82%89_01%20kaob.jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/design/%E8%AF%A6%E6%83%85_01%20%E6%8B%B7%E8%B4%9D.jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/design/%E9%A6%96%E9%A1%B5.jpg",
+      "https://tinistyle-self.oss-cn-chengdu.aliyuncs.com/works/design/%E9%A6%99%E8%82%A0_01%20%E6%8B%B7%E8%B4%9D.jpg",
+    ]
+
+    let currentTab = 0
+    // 模态框
+    const modal = document.querySelector("#modal")
+    const content = document.querySelector(".content")
+    const closeBtn = document.querySelector("button")
+
+    // 关闭模态框
+    closeBtn.addEventListener("click", (e) => {
+
+      const contentTag = content.firstElementChild.tagName
+      console.log(contentTag)
+
+      if (contentTag === "IMG") {
+        content.innerHTML = ""
+
+      } else if (contentTag === "VIDEO") {
+        const video = content.firstElementChild;
+        video.pause()
+        video.src = ""
+        // video.load()
+        // video = null
+        content.innerHTML = ""
+      } else {
+        content.innerHTML = ""
+      }
+      modal.style.display = "none"
+    })
+
+    function createItems(containerName, datas, datatype) {
+      const container = document.querySelector(containerName)
+      const fragment = document.createDocumentFragment()
+      datas.forEach((item, index) => {
+        let itemDiv = document.createElement("div")
+        itemDiv.classList.add("item")
+        let chiledEle;
+        if (datatype === "photo") {
+          chiledEle = document.createElement("img");
+          chiledEle.classList.add("photo")
+        } else if (datatype === "video") {
+          chiledEle = document.createElement("video");
+            chiledEle.classList.add("video")
+        } else if (datatype === "design") {
+          chiledEle = document.createElement("img");
+            chiledEle.classList.add("design")
+        }
+        chiledEle.src = item
+        itemDiv.appendChild(chiledEle)
+        fragment.appendChild(itemDiv)
+      })
+      container.appendChild(fragment)
+      // 点击图片打开模态框显示大图
+      container.addEventListener("click", (e) => {
+        // console.log(e.target.tagName)
+        if (e.target.tagName === "IMG") {
+          modal.style.display = "block"
+          let img = document.createElement("img")
+          img.src = e.target.src
+          content.appendChild(img)
+        }
+        if (e.target.tagName === "VIDEO") { // 点击视频打开模态框播放视频
+          modal.style.display = "block"
+          let video = document.createElement("video")
+          video.src = e.target.src
+          video.setAttribute("controls", "controls")
+          content.appendChild(video)
+        }
+      })
+    }
+
+    createItems(".container1", photo1, "photo");
+    createItems(".container2", video, "video");
+    createItems(".container3", design, "design");
+
+    // 切换tab
+    const tabs = document.querySelectorAll("h2")
+    const tabPanels = document.querySelectorAll(".tab")
+    tabs.forEach((tab, index) => {
+      console.log(index)
+      tab.addEventListener("click", () => {
+
+        tabs.forEach((item) => {
+          item.classList.remove("active")
+        })
+        tab.classList.add("active")
+        tabPanels.forEach((item) => {
+          item.classList.remove("show")
+          item.classList.add("hide")
+        })
+        tabPanels[index].classList.remove("hide")
+        tabPanels[index].classList.add("show")
+      })
+    })
+
+
+    // tab1.classList.add("show")
+  </script>
+</body>
+
+</html>
